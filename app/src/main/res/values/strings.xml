@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">liangmi</string>
+    <string name="tip_no_data">No data now!</string>
 </resources>
