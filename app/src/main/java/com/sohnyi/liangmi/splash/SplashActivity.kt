@@ -1,15 +1,15 @@
 package com.sohnyi.liangmi.splash
 
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.sohnyi.liangmi.MainActivity
 import kotlinx.coroutines.*
-import kotlin.concurrent.thread
 
-class SplashActivity: AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
+
+    @ExperimentalCoroutinesApi
+    private val scope = MainScope()
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
@@ -25,13 +25,18 @@ class SplashActivity: AppCompatActivity() {
     }
 
     private fun waitToMain(time: Long = 3000) {
-        GlobalScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.Default) {
-                delay(time)
-            }
+        scope.launch(Dispatchers.Main) {
+            delay(time)
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             finish()
         }
-
     }
+
+    @ExperimentalCoroutinesApi
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
+    }
+
+
 }
