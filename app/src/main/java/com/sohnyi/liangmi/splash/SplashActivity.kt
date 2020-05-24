@@ -3,7 +3,7 @@ package com.sohnyi.liangmi.splash
 import android.content.Intent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.sohnyi.liangmi.MainActivity
+import com.sohnyi.liangmi.LoginActivity
 import kotlinx.coroutines.*
 
 class SplashActivity : AppCompatActivity() {
@@ -15,7 +15,7 @@ class SplashActivity : AppCompatActivity() {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             hideSystemUI()
-            waitToMain(1000)
+            waitToMain()
         }
     }
 
@@ -24,10 +24,10 @@ class SplashActivity : AppCompatActivity() {
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
     }
 
-    private fun waitToMain(time: Long = 3000) {
+    private fun waitToMain() {
         scope.launch(Dispatchers.Main) {
-            delay(time)
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            delay(1500)
+            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             finish()
         }
     }
