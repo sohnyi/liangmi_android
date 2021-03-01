@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "name": "Social"
+  },
+  {
+    "id": "2",
+    "name": "Finance "
+  },
+  {
+    "id": "3",
+    "name": "Game"
+  },
+  {
+    "id": "4",
+    "name": "Education"
+  },
+  {
+    "id": "5",
+    "name": "Entertainment"
+  },
+  {
+    "id": "6",
+    "name": "Lifestyle"
+  },
+  {
+    "id": "7",
+    "name": "Other"
+  }
+]
