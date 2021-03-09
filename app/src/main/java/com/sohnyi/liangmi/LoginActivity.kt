@@ -1,73 +1,110 @@
 package com.sohnyi.liangmi
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_login.*
-import java.lang.StringBuilder
+import androidx.core.widget.addTextChangedListener
+import androidx.preference.PreferenceManager
+import org.apache.commons.codec.digest.DigestUtils
 
-class LoginActivity: AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
-    private var passwordSB = StringBuilder()
+    private var savedPassword: String? = null
+    private var password = ""
+
+    private val etPassword: EditText by lazy {
+        findViewById(R.id.et_password)
+    }
+
+    private val tvPassword: TextView by lazy {
+        findViewById(R.id.tv_password)
+    }
+
+    companion object {
+        const val EXTRA_PASSWORD = "com.sohnyi.liangmi.LoginActivity.password"
+        private const val NUMBER_OF_PASSWORD = 6
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        ///TODO handle the different status between has set password and no password has set
+        savedPassword = intent.getStringExtra(EXTRA_PASSWORD)
 
-        setViewOnClickListener()
-    }
+        val ivClear: ImageView = findViewById(R.id.iv_clear)
+        val btnNext: Button = findViewById(R.id.btn_next)
 
-    private fun setViewOnClickListener() {
-        tv_0.setOnClickListener { onNumberClick(it.id) }
-        tv_1.setOnClickListener { onNumberClick(it.id) }
-        tv_2.setOnClickListener { onNumberClick(it.id) }
-        tv_3.setOnClickListener { onNumberClick(it.id) }
-        tv_4.setOnClickListener { onNumberClick(it.id) }
-        tv_5.setOnClickListener { onNumberClick(it.id) }
-        tv_6.setOnClickListener { onNumberClick(it.id) }
-        tv_6.setOnClickListener { onNumberClick(it.id) }
-        tv_7.setOnClickListener { onNumberClick(it.id) }
-        tv_8.setOnClickListener { onNumberClick(it.id) }
-        tv_9.setOnClickListener { onNumberClick(it.id) }
 
-        tv_backspace.setOnClickListener { onBackSpaceClick() }
+        ivClear.setOnClickListener {
+            etPassword.text.clear()
+        }
 
-        tv_enter.setOnClickListener { onEnterClick() }
-    }
+        btnNext.isEnabled = true
+        btnNext.setOnClickListener {
+            handleInput(etPassword.text.toString())
+        }
 
-    private fun onNumberClick(id: Int) {
-        if (passwordSB.length < 8) {
-            when (id) {
-                R.id.tv_0 -> passwordSB.append("0")
-                R.id.tv_1 -> passwordSB.append("1")
-                R.id.tv_2 -> passwordSB.append("2")
-                R.id.tv_3 -> passwordSB.append("3")
-                R.id.tv_4 -> passwordSB.append("4")
-                R.id.tv_5 -> passwordSB.append("5")
-                R.id.tv_6 -> passwordSB.append("6")
-                R.id.tv_7 -> passwordSB.append("7")
-                R.id.tv_8 -> passwordSB.append("8")
-                R.id.tv_9 -> passwordSB.append("9")
+        etPassword.addTextChangedListener {
+            val length: Int = it?.length ?: 0
+            if (length > 0) {
+                ivClear.visibility = View.VISIBLE
+                btnNext.isEnabled = length >= NUMBER_OF_PASSWORD
+            } else {
+                ivClear.visibility = View.INVISIBLE
             }
-            tv_password.text = passwordSB.toString()
+        }
+
+        etPassword.setOnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    handleInput(etPassword.text.toString())
+                    true
+                }
+                else -> false
+            }
         }
     }
 
-    private fun onBackSpaceClick() {
-        if (passwordSB.isNotEmpty()) {
-            passwordSB.deleteCharAt(passwordSB.length - 1)
-            tv_password.text = passwordSB.toString()
-        }
-    }
-
-    private fun onEnterClick() {
-        if (passwordSB.length >= 6) {
-            Toast.makeText(this, "password enter", Toast.LENGTH_SHORT).show()
-            ///TODO handler after password set successful or password enter right
+    private fun handleInput(input: String) {
+        if (savedPassword.isNullOrEmpty()) {
+            if (password.isEmpty()) {
+                etPassword.text.clear()
+                password = input
+                tvPassword.text = getString(R.string.confirm_password)
+            } else {
+                if (input == password) {
+                    val sp =
+                        PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
+                    val editor = sp.edit()
+                    val pwSHA256 = DigestUtils.sha256Hex(password)
+                    editor.putString("password", pwSHA256)
+                    if (editor.commit()) {
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
+                    }
+                } else {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        getString(R.string.password_not_match),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         } else {
-            Toast.makeText(this, "password to short", Toast.LENGTH_SHORT).show()
+            if (DigestUtils.sha256Hex(input) == savedPassword) {
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
+            } else {
+                Toast.makeText(
+                    this@LoginActivity,
+                    getString(R.string.wrong_password),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
+
 }

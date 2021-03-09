@@ -3,5 +3,6 @@
     <dimen name="card_view_elevation">2dp</dimen>
     <dimen name="card_view_radius">8dp</dimen>
     <dimen name="card_view_height">64dp</dimen>
+    <dimen name="common_height">40dp</dimen>
 
 </resources>
