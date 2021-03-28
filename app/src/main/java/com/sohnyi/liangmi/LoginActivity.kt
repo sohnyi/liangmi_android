@@ -7,8 +7,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import androidx.preference.PreferenceManager
-import org.apache.commons.codec.digest.DigestUtils
+import com.sohnyi.liangmi.extensions.sha256Hex
+import com.sohnyi.liangmi.utils.SpUtils
 
 class LoginActivity : AppCompatActivity() {
 
@@ -76,15 +76,10 @@ class LoginActivity : AppCompatActivity() {
                 tvPassword.text = getString(R.string.confirm_password)
             } else {
                 if (input == password) {
-                    val sp =
-                        PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
-                    val editor = sp.edit()
-                    val pwSHA256 = DigestUtils.sha256Hex(password)
-                    editor.putString("password", pwSHA256)
-                    if (editor.commit()) {
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                        finish()
-                    }
+                    val savedPassword = input + SUFFIX
+                    SpUtils.savePasSha256(this, savedPassword.sha256Hex)
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
                 } else {
                     Toast.makeText(
                         this@LoginActivity,
@@ -94,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         } else {
-            if (DigestUtils.sha256Hex(input) == savedPassword) {
+            if ((input + SUFFIX).sha256Hex == savedPassword) {
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 finish()
             } else {

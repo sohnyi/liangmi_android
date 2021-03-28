@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    companion object  {
+    companion object {
         private const val TAG = "MainActivity"
     }
 

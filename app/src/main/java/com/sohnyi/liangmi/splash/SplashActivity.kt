@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.PreferenceManager
 import com.sohnyi.liangmi.LoginActivity
+import com.sohnyi.liangmi.utils.SpUtils
 import kotlinx.coroutines.*
 
 class SplashActivity : AppCompatActivity() {
@@ -44,7 +44,6 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun setSavedPassword() {
-        val sp = PreferenceManager.getDefaultSharedPreferences(this@SplashActivity)
-        savedPassword = sp.getString("password", "")
+        savedPassword = SpUtils.getPasSha256(this)
     }
 }
