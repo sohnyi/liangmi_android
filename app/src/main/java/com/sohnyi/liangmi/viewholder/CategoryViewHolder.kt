@@ -1,38 +1,45 @@
 package com.sohnyi.liangmi.viewholder
 
-import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.sohnyi.liangmi.utils.dp2px
-import kotlinx.android.synthetic.main.item_password.view.*
+import com.sohnyi.liangmi.R
+import com.sohnyi.liangmi.entry.Category
+import com.sohnyi.liangmi.enums.CategoryEnum
+import com.sohnyi.liangmi.extensions.dp
 
-class CategoryViewHolder(private val context: Context, view: View): RecyclerView.ViewHolder(view),
-    View.OnClickListener {
+class CategoryViewHolder(view: View, private val onClick: (category: Category) -> Unit) :
+    RecyclerView.ViewHolder(view) {
 
-    init {
-        itemView.setOnClickListener(this)
-    }
+    private val tvCategory: TextView = itemView.findViewById(R.id.tv_category)
+    private val ivCategory: ImageView = itemView.findViewById(R.id.iv_category)
 
-    var itemPosition = -1
+    fun bind(category: Category) {
+        tvCategory.text = category.name
+        bindItemIcon(category)
+        itemView.setOnClickListener { onClick(category) }
 
-    fun bind(category: String, position: Int) {
-        itemView.tv_category.text = category
-        itemPosition = position
-        val marginLayoutParams = ViewGroup.MarginLayoutParams(itemView.layoutParams)
-        if (position % 2 == 0) {
-            marginLayoutParams.setMargins(dp2px(context, 16), dp2px(context, 16), dp2px(context, 8), 0)
-        } else{
-            marginLayoutParams.setMargins(dp2px(context, 8), dp2px(context, 16), dp2px(context, 16), 0)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            itemView.elevation = 8.dp
+            itemView.outlineAmbientShadowColor = Color.DKGRAY
         }
-
-        val layoutParams = FrameLayout.LayoutParams(marginLayoutParams)
-        itemView.layoutParams = layoutParams
-
     }
 
-    override fun onClick(v: View?) {
-        println("Clicked position $itemPosition")
+    private fun bindItemIcon(category: Category) {
+        val drawableId =
+            when (CategoryEnum.values()[category.id]) {
+                CategoryEnum.SOCIAL -> R.drawable.ic_social
+                CategoryEnum.FINANCE -> R.drawable.ic_finance
+                CategoryEnum.EDUCATION -> R.drawable.ic_education
+                CategoryEnum.ENTERTAINMENT -> R.drawable.ic_entertainment
+                CategoryEnum.GAME -> R.drawable.ic_game
+                CategoryEnum.LIFESTYLE -> R.drawable.ic_lifestyle
+                CategoryEnum.OTHER -> R.drawable.ic_other
+            }
+        ivCategory.setImageDrawable(ContextCompat.getDrawable(ivCategory.context, drawableId))
     }
 }

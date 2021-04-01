@@ -11,4 +11,6 @@
     <color name="colorSecond">#ffab91</color>
     <color name="colorSecondLight">#ffddc1</color>
     <color name="colorSecondDark">#c97b63</color>
+    <color name="dividingLine">#E0E0E0</color>
+    <color name="colorBackgroundGrey">#FAFAFa</color>
 </resources>
