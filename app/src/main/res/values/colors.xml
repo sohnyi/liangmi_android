@@ -13,4 +13,5 @@
     <color name="colorSecondDark">#c97b63</color>
     <color name="dividingLine">#E0E0E0</color>
     <color name="colorBackgroundGrey">#FAFAFa</color>
+    <color name="textBlack">#121212</color>
 </resources>

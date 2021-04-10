@@ -1,5 +1,6 @@
 package com.sohnyi.liangmi
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
@@ -35,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onCategoryClick(category: Category) {
-        Toast.makeText(this, category.name, Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this, PasswordsActivity::class.java).apply {
+            putExtra(PasswordsActivity.EXTRA_TITLE, category.name)
+        })
     }
 }
