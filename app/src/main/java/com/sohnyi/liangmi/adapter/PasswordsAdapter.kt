@@ -15,7 +15,7 @@ class PasswordsAdapter : RecyclerView.Adapter<PasswordHolder>() {
     }
 
     override fun onBindViewHolder(holder: PasswordHolder, position: Int) {
-        holder.bind(Password("T$position", "A$position", "P$position"))
+        holder.bind(Password("T$position", if (position % 2 == 0) 1 else 0, "A$position", "P$position"))
     }
 
     override fun getItemCount(): Int {
