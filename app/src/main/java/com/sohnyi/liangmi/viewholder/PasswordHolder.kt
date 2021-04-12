@@ -14,12 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sohnyi.liangmi.R
 import com.sohnyi.liangmi.entry.Password
 import com.sohnyi.liangmi.enums.Icons
+import com.sohnyi.liangmi.utils.copyToClipboard
 
-class PasswordHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    private val cm: ClipboardManager by lazy {
-        itemView.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    }
+class PasswordHolder(itemView: View, private val onClick: (password: Password) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
     private val tvTitle: TextView = itemView.findViewById(R.id.tv_title)
     private val ivIcon: ImageView = itemView.findViewById(R.id.iv_icon)
@@ -47,6 +44,10 @@ class PasswordHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         tvAccount.text = password.account
 
+        itemView.setOnClickListener {
+            onClick(password)
+        }
+
         ivVisible.setOnClickListener {
             visible = !visible
             if (visible) {
@@ -71,12 +72,7 @@ class PasswordHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
 
         ivCopy.setOnClickListener {
-            val clip = ClipData.newPlainText(
-                ivCopy.context.getString(R.string.app_name),
-                password.password
-            )
-            cm.setPrimaryClip(clip)
-            Toast.makeText(it.context, "Copied", Toast.LENGTH_SHORT).show()
+            copyToClipboard(it.context, password.password)
         }
     }
 

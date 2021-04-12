@@ -2,9 +2,11 @@ package com.sohnyi.liangmi
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.FragmentManager
+import com.sohnyi.liangmi.utils.setStatusBarMode
 
 class PasswordPagerActivity : AppCompatActivity() {
 
@@ -22,6 +24,8 @@ class PasswordPagerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password_pager)
+
+        setStatusBarMode(Color.WHITE, true)
 
         val passwordId = intent.getIntExtra(EXTRA_PASSWORD_ID, 0)
 
