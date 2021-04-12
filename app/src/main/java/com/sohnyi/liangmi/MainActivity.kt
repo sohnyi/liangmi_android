@@ -1,8 +1,9 @@
 package com.sohnyi.liangmi
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+
+        setSupportActionBar(toolbar)
+
         recycler_view.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = CategoryAdapter() {
@@ -35,9 +39,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.give_me_a_password -> startActivity(PasswordGeneratorActivity.newIntent(this))
+            R.id.settings -> Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show()
+        }
+        return true
+    }
+
     private fun onCategoryClick(category: Category) {
-        startActivity(Intent(this, PasswordsActivity::class.java).apply {
-            putExtra(PasswordsActivity.EXTRA_TITLE, category.name)
-        })
+        val intent = PasswordListActivity.newIntent(this, category.id)
+        startActivity(intent)
     }
 }

@@ -8,5 +8,13 @@
     <string name="wrong_password">密码错误</string>
     <string name="password">密码</string>
     <string name="invisible_password">••••••••••••</string>
-
+    <string name="title">标题</string>
+    <string name="account">账户</string>
+    <string name="uppercase">大写</string>
+    <string name="lowercase">小写</string>
+    <string name="numbers">数字</string>
+    <string name="symbols">符号</string>
+    <string name="copy_password">复制密码</string>
+    <string name="give_me_a_password">来个密码</string>
+    <string name="settings">设置</string>
 </resources>
