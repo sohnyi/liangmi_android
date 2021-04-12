@@ -1,9 +1,7 @@
 package com.sohnyi.liangmi
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sohnyi.liangmi.adapter.CategoryAdapter
@@ -36,8 +34,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onCategoryClick(category: Category) {
-        startActivity(Intent(this, PasswordsActivity::class.java).apply {
-            putExtra(PasswordsActivity.EXTRA_TITLE, category.name)
-        })
+        val intent = PasswordListActivity.newIntent(this, category.id)
+        startActivity(intent)
     }
 }
