@@ -3,9 +3,8 @@ package com.sohnyi.liangmi
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
 import com.sohnyi.liangmi.utils.setStatusBarMode
 
 class PasswordPagerActivity : AppCompatActivity() {

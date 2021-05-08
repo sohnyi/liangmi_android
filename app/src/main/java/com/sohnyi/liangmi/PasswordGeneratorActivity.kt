@@ -1,21 +1,20 @@
 package com.sohnyi.liangmi
 
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.sohnyi.liangmi.utils.copyToClipboard
-import com.sohnyi.liangmi.utils.giveMeAPassword
 import com.sohnyi.liangmi.utils.setStatusBarMode
+import com.sohnyi.liangmi.veiwmodel.PasswordGeneratorViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class PasswordGeneratorActivity : AppCompatActivity() {
 
@@ -31,8 +30,8 @@ class PasswordGeneratorActivity : AppCompatActivity() {
     private var numbersAvailable = true
     private var symbolsAvailable = true
 
-    private val cm: ClipboardManager by lazy {
-        getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    private val passwordGeneratorViewModel by lazy {
+        ViewModelProvider(this).get(PasswordGeneratorViewModel::class.java)
     }
 
     companion object {
@@ -105,22 +104,13 @@ class PasswordGeneratorActivity : AppCompatActivity() {
             copyPassword()
         }
 
-        reNewPassword()
+        tvPassword.text = passwordGeneratorViewModel.password
     }
 
     private fun reNewPassword() {
-        var password: String
         lifecycleScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.Default) {
-                password = giveMeAPassword(
-                    passwordLength,
-                    uppercaseAvailable,
-                    lowercaseAvailable,
-                    numbersAvailable,
-                    symbolsAvailable
-                )
-            }
-            tvPassword.text = password
+            passwordGeneratorViewModel.getNewPassword(passwordLength, uppercaseAvailable, lowercaseAvailable, numbersAvailable, symbolsAvailable)
+            tvPassword.text = passwordGeneratorViewModel.password
         }
     }
 

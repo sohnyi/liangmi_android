@@ -9,11 +9,11 @@ private const val NUMBERS = "0123456789"
 private const val SYMBOLS = "!@#\$%^&*()_-+=<>?/{}~|"
 
 fun giveMeAPassword(
-    length: Int,
-    uppercaseAvailable: Boolean,
-    lowercaseAvailable: Boolean,
-    numbersAvailable: Boolean,
-    symbolsAvailable: Boolean
+    length: Int = 12,
+    uppercaseAvailable: Boolean = true,
+    lowercaseAvailable: Boolean = true,
+    numbersAvailable: Boolean = true,
+    symbolsAvailable: Boolean = true
 ) : String {
 
     if (length > 128) {
