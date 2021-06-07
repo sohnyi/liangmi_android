@@ -6,6 +6,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.sohnyi.liangmi.LoginActivity
+import com.sohnyi.liangmi.PasswordLab
+import com.sohnyi.liangmi.database.PasswordRepository
 import com.sohnyi.liangmi.utils.SpUtils
 import kotlinx.coroutines.*
 
@@ -25,6 +27,11 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch(Dispatchers.IO) {
             setSavedPassword()
+        }
+        GlobalScope.launch(Dispatchers.IO) {
+            PasswordRepository.initialize(applicationContext)
+            val passwords = PasswordRepository.get().getPasswords()
+            PasswordLab.allPasswords.addAll(passwords)
         }
     }
 

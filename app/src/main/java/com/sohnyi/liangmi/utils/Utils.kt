@@ -15,3 +15,7 @@ fun copyToClipboard(context: Context, content: String) {
     clipboardManager.setPrimaryClip(clip)
     Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show()
 }
+
+fun showToast(context: Context, content: String, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(context, content, duration).show()
+}

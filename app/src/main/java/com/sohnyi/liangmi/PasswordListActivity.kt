@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sohnyi.liangmi.adapter.PasswordListAdapter
 import com.sohnyi.liangmi.common.SpeedyLinearSmoothScroller
 import com.sohnyi.liangmi.entry.Password
@@ -46,15 +47,14 @@ class PasswordListActivity : AppCompatActivity() {
 
         setStatusBarMode(Color.WHITE, true)
 
-
-
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         val rv: RecyclerView = findViewById(R.id.rv_password)
+        val fabAdd: FloatingActionButton = findViewById(R.id.fab_add)
 
         setSupportActionBar(toolbar)
 
         categoryId = intent.getIntExtra(EXTRA_CATEGORY_ID, 0)
-        val title = when(CategoryEnum.values()[categoryId]) {
+        val title = when (CategoryEnum.values()[categoryId]) {
             CategoryEnum.SOCIAL -> CategoryEnum.SOCIAL.title
             CategoryEnum.FINANCE -> CategoryEnum.FINANCE.title
             CategoryEnum.GAME -> CategoryEnum.GAME.title
@@ -79,11 +79,22 @@ class PasswordListActivity : AppCompatActivity() {
             scroller.targetPosition = 0
             llm.startSmoothScroll(scroller)
         }
+
+        fabAdd.setOnClickListener {
+            onAddClick()
+        }
     }
 
     private fun onPasswordClick(password: Password) {
-        val intent = PasswordPagerActivity.newIntent(this, password.id)
+        val intent = PasswordPagerActivity.newIntent(this, categoryId, password.id)
         startActivity(intent)
+    }
+
+    /**
+     * 添加密码点击事件
+     */
+    private fun onAddClick() {
+        startActivity(PasswordPagerActivity.newIntent(this, categoryId, null))
     }
 
 }

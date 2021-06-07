@@ -12,7 +12,8 @@ import com.sohnyi.liangmi.entry.Password
 import com.sohnyi.liangmi.enums.Icons
 import com.sohnyi.liangmi.utils.copyToClipboard
 
-class PasswordHolder(itemView: View, private val onClick: (password: Password) -> Unit) : RecyclerView.ViewHolder(itemView) {
+class PasswordHolder(itemView: View, private val onClick: (password: Password) -> Unit) :
+    RecyclerView.ViewHolder(itemView) {
 
     private val tvTitle: TextView = itemView.findViewById(R.id.tv_title)
     private val ivIcon: ImageView = itemView.findViewById(R.id.iv_icon)
@@ -26,17 +27,21 @@ class PasswordHolder(itemView: View, private val onClick: (password: Password) -
     fun bind(password: Password) {
         tvTitle.text = password.title
 
-        val drawableId = when(Icons.values()[password.iconId]) {
-            Icons.QQ -> R.drawable.ic_qq
-            Icons.WECHAT -> R.drawable.ic_wechat
-            else -> 0
+        password.iconId?.let {
+            val drawableId = when (Icons.values()[it]) {
+                Icons.QQ -> R.drawable.ic_qq
+                Icons.WECHAT -> R.drawable.ic_wechat
+                else -> 0
+            }
+
+            if (drawableId != 0) {
+                ivIcon.setImageDrawable(ContextCompat.getDrawable(ivIcon.context, drawableId))
+            } else {
+                ivIcon.setImageDrawable(ColorDrawable(Color.WHITE))
+            }
         }
 
-        if (drawableId != 0) {
-            ivIcon.setImageDrawable(ContextCompat.getDrawable(ivIcon.context, drawableId))
-        } else {
-            ivIcon.setImageDrawable(ColorDrawable(Color.WHITE))
-        }
+
 
         tvAccount.text = password.account
 
