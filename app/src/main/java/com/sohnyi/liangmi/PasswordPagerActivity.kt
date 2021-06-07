@@ -11,10 +11,12 @@ class PasswordPagerActivity : AppCompatActivity() {
 
     companion object {
 
+        private const val EXTRA_CATEGORY_ID = "category"
         private const val EXTRA_PASSWORD_ID = "password_id"
 
-        fun newIntent(packageContext: Context, passwordId: Int?): Intent {
+        fun newIntent(packageContext: Context, categoryId: Int, passwordId: Int?): Intent {
             return Intent(packageContext, PasswordPagerActivity::class.java).apply {
+                putExtra(EXTRA_CATEGORY_ID, categoryId)
                 putExtra(EXTRA_PASSWORD_ID, passwordId)
             }
         }
@@ -26,12 +28,16 @@ class PasswordPagerActivity : AppCompatActivity() {
 
         setStatusBarMode(Color.WHITE, true)
 
-        val passwordId = intent.getIntExtra(EXTRA_PASSWORD_ID, 0)
+        val categoryId: Int = intent.getIntExtra(EXTRA_CATEGORY_ID, -1)
+        var passwordId: Int? = intent.getIntExtra(EXTRA_PASSWORD_ID, -1)
+        if (passwordId == -1) {
+            passwordId = null
+        }
 
         val fm = supportFragmentManager
         var fragment = fm.findFragmentById(R.id.fragment_container)
         if (fragment == null) {
-            fragment = PasswordFragment.newInstance(if (passwordId == 0) null else passwordId)
+            fragment = PasswordFragment.newInstance(categoryId, passwordId)
             fm.beginTransaction()
                 .add(R.id.fragment_container, fragment)
                 .commit()

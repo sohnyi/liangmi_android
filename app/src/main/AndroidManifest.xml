@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sohnyi.liangmi">
 
     <application
-        android:name=".LiangmiApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,17 +17,6 @@
         <activity
             android:name=".splash.SplashActivity"
             android:theme="@style/SplashTheme">
-<!--            android:exported="false">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/DarkStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,8 +24,25 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:theme="@style/DarkStatusBar"></activity>
+        <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
+
+        <!--provider-->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="com.sohnyi.liangmi.startup.RoomInitializer"
+                android:value="androidx.startup"></meta-data>
+        </provider>
     </application>
 
 </manifest>

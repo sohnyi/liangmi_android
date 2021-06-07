@@ -3,7 +3,6 @@ package com.sohnyi.liangmi.database
 import android.content.Context
 import androidx.room.Room
 import com.sohnyi.liangmi.entry.Password
-import java.lang.IllegalStateException
 
 /**
  * 密码数据库仓库
@@ -11,11 +10,12 @@ import java.lang.IllegalStateException
  */
 
 private const val DATABASE_NAME = "liangmi-database"
+
 class PasswordRepository private constructor(context: Context) {
 
-    private val database: LiangmiDatebase = Room.databaseBuilder(
+    private val database: LiangmiDatabase = Room.databaseBuilder(
         context.applicationContext,
-        LiangmiDatebase::class.java,
+        LiangmiDatabase::class.java,
         DATABASE_NAME
     ).build()
 
@@ -23,7 +23,8 @@ class PasswordRepository private constructor(context: Context) {
 
     suspend fun getPasswords(): List<Password> = passwordDAO.getAllPassword()
 
-    suspend fun getPasswords(categoryId: Int): List<Password> = passwordDAO.getPasswordsByCategory(categoryId)
+    suspend fun getPasswords(categoryId: Int): List<Password> =
+        passwordDAO.getPasswordsByCategory(categoryId)
 
     suspend fun addPassword(password: Password) = passwordDAO.addPassword(password)
 
@@ -37,8 +38,7 @@ class PasswordRepository private constructor(context: Context) {
         }
 
         fun get(): PasswordRepository {
-            return INSTANCE ?:
-            throw IllegalStateException("PasswordRepository must be initialized")
+            return INSTANCE ?: throw IllegalStateException("PasswordRepository must be initialized")
         }
     }
 }

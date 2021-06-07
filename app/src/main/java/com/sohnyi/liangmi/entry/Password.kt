@@ -6,11 +6,13 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Password(
-    @PrimaryKey val id: Int,
-    val title: String,
+    @PrimaryKey(autoGenerate = true) val id: Int? = null,
     @ColumnInfo(name = "category_id") val categoryId: Int,
-    @ColumnInfo(name = "icon_id") val iconId: Int,
-    val account: String,
-    val password: String,
-    val remark: String? = null
+    var title: String,
+    var account: String,
+    var password: String,
+    var remark: String? = null,
+    @ColumnInfo(name = "icon_id") var iconId: Int? = null,
+    @ColumnInfo(name = "create_time") val crateTime: Long? = null,
+    @ColumnInfo(name = "update_time") var updateTime: Long? = null
 )

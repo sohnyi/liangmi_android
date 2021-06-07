@@ -8,9 +8,10 @@ import com.sohnyi.liangmi.entry.Password
  * 应用数据库
  * Create by yi on Fri 2021/05/07
  */
-private const val DATABASE_VERSION = 1
+private const val DATABASE_VERSION = 2
+
 @Database(entities = [Password::class], version = DATABASE_VERSION)
-abstract class LiangmiDatebase : RoomDatabase() {
+abstract class LiangmiDatabase : RoomDatabase() {
 
     abstract fun passwordDao(): PasswordDAO
 }
