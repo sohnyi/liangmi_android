@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/give_me_a_password"
-        android:title="@string/give_me_a_password"
-        android:icon="@drawable/ic_baseline_emoji_objects_24"
-        app:showAsAction="ifRoom|withText"/>
-
     <item android:id="@+id/settings"
         android:title="@string/settings"
         android:icon="@drawable/ic_baseline_settings_24"

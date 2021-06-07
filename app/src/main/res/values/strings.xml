@@ -17,4 +17,7 @@
     <string name="copy_password">复制密码</string>
     <string name="give_me_a_password">来个密码</string>
     <string name="settings">设置</string>
+    <string name="remark">备注</string>
+    <string name="new_password">来新的账户了</string>
+    <string name="save">保存</string>
 </resources>

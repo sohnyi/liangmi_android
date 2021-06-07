@@ -4,17 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sohnyi.liangmi.adapter.PasswordListAdapter
+import com.sohnyi.liangmi.common.SpeedyLinearSmoothScroller
 import com.sohnyi.liangmi.entry.Password
 import com.sohnyi.liangmi.enums.CategoryEnum
 import com.sohnyi.liangmi.utils.setStatusBarMode
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.math.max
 
 class PasswordListActivity : AppCompatActivity() {
+
+    private var categoryId: Int = CategoryEnum.EDUCATION.id
 
     companion object {
         private const val EXTRA_CATEGORY_ID = "category_id"
@@ -26,8 +30,12 @@ class PasswordListActivity : AppCompatActivity() {
         }
     }
 
+    private val scroller by lazy {
+        SpeedyLinearSmoothScroller(this)
+    }
+
     private val mAdapter by lazy {
-        PasswordListAdapter {
+        PasswordListAdapter(categoryId) {
             onPasswordClick(it)
         }
     }
@@ -45,8 +53,8 @@ class PasswordListActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        val id = intent.getIntExtra(EXTRA_CATEGORY_ID, 0)
-        val title = when(CategoryEnum.values()[id]) {
+        categoryId = intent.getIntExtra(EXTRA_CATEGORY_ID, 0)
+        val title = when(CategoryEnum.values()[categoryId]) {
             CategoryEnum.SOCIAL -> CategoryEnum.SOCIAL.title
             CategoryEnum.FINANCE -> CategoryEnum.FINANCE.title
             CategoryEnum.GAME -> CategoryEnum.GAME.title
@@ -60,8 +68,17 @@ class PasswordListActivity : AppCompatActivity() {
         toolbar.title = title
         setSupportActionBar(toolbar)
 
-        rv.layoutManager = LinearLayoutManager(this)
+
+        val llm = LinearLayoutManager(this)
+        rv.layoutManager = llm
         rv.adapter = mAdapter
+
+        val ivScrollTop: ImageButton = findViewById(R.id.ib_to_top)
+        ivScrollTop.setOnClickListener {
+            scroller.duration = 5f / (max(llm.findLastVisibleItemPosition(), 15) / 15)
+            scroller.targetPosition = 0
+            llm.startSmoothScroll(scroller)
+        }
     }
 
     private fun onPasswordClick(password: Password) {
