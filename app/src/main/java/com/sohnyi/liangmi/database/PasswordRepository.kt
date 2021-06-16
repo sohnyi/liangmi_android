@@ -28,6 +28,8 @@ class PasswordRepository private constructor(context: Context) {
 
     suspend fun addPassword(password: Password) = passwordDAO.addPassword(password)
 
+    suspend fun updatePassword(password: Password) = passwordDAO.updatePassword(password)
+
     companion object {
         private var INSTANCE: PasswordRepository? = null
 

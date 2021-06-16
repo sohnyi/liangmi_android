@@ -2,8 +2,7 @@ package com.sohnyi.liangmi.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.sohnyi.liangmi.PasswordLab
+import androidx.recyclerview.widget.ListAdapter
 import com.sohnyi.liangmi.R
 import com.sohnyi.liangmi.entry.Password
 import com.sohnyi.liangmi.viewholder.PasswordHolder
@@ -12,15 +11,8 @@ import com.sohnyi.liangmi.viewholder.PasswordHolder
  * 密码列表适配器
  */
 class PasswordListAdapter(
-    private val categoryId: Int,
     private val onClick: (password: Password) -> Unit
-) : RecyclerView.Adapter<PasswordHolder>() {
-
-    private val passwords: MutableList<Password> = mutableListOf()
-
-    init {
-        passwords.addAll(PasswordLab.getPasswords(categoryId))
-    }
+) : ListAdapter<Password, PasswordHolder>(PasswordDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PasswordHolder {
         val itemView =
@@ -29,10 +21,6 @@ class PasswordListAdapter(
     }
 
     override fun onBindViewHolder(holder: PasswordHolder, position: Int) {
-        holder.bind(passwords[position])
-    }
-
-    override fun getItemCount(): Int {
-        return passwords.size
+        holder.bind(getItem(position))
     }
 }

@@ -1,12 +1,17 @@
 package com.sohnyi.liangmi
 
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
+import com.sohnyi.liangmi.database.PasswordRepository
 import com.sohnyi.liangmi.entry.Password
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object PasswordLab {
 
     val allPasswords = mutableListOf<Password>()
 
-    fun getPasswords(id: Int): List<Password> {
+    fun getPasswordsByCategory(id: Int): List<Password> {
         val passwords: MutableList<Password> = mutableListOf()
         allPasswords.forEach {
             if (it.categoryId == id) {
@@ -23,6 +28,23 @@ object PasswordLab {
             }
         }
         return null
+    }
+
+    fun addPassword(activity: FragmentActivity, password: Password) {
+        activity.lifecycleScope.launch(Dispatchers.IO) {
+            PasswordRepository.get().addPassword(password)
+        }
+        allPasswords.add(password)
+    }
+
+    fun updatePassword(activity: FragmentActivity, password: Password) {
+        activity.lifecycleScope.launch(Dispatchers.IO) {
+            PasswordRepository.get().updatePassword(password)
+        }
+        val index = allPasswords.indexOfFirst { it.id == password.id }
+        if (index != -1) {
+            allPasswords[index] = password
+        }
     }
 
 }

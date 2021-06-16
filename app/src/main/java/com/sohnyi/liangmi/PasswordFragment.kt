@@ -1,5 +1,6 @@
 package com.sohnyi.liangmi
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
@@ -9,13 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import com.sohnyi.liangmi.database.PasswordRepository
 import com.sohnyi.liangmi.entry.Password
 import com.sohnyi.liangmi.utils.showToast
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -145,8 +141,8 @@ class PasswordFragment : Fragment() {
             return
         }
 
-        if (mPassword === null) {
-            mPassword = Password(
+        if (mPassword == null) {
+            val password = Password(
                 categoryId = mCategoryId!!,
                 title = mEtTitle?.text.toString(),
                 account = mEtAccount?.text.toString(),
@@ -154,23 +150,18 @@ class PasswordFragment : Fragment() {
                 remark = mEtRemark?.text.toString(),
                 crateTime = System.currentTimeMillis()
             )
+            PasswordLab.addPassword(requireActivity(), password)
         } else {
-            mPassword.apply {
-                this?.title = mEtTitle?.text.toString()
-                this?.account = mEtAccount?.text.toString()
-                this?.password = mEtPassword?.text.toString()
-                this?.remark = mEtRemark?.text.toString()
+            mPassword?.run {
+                this.title = mEtTitle?.text.toString()
+                this.account = mEtAccount?.text.toString()
+                this.password = mEtPassword?.text.toString()
+                this.remark = mEtRemark?.text.toString()
+                PasswordLab.updatePassword(requireActivity(), this)
             }
         }
+        activity?.setResult(Activity.RESULT_OK)
+        activity?.finish()
 
-        mPassword?.let {
-            lifecycleScope.launch(Dispatchers.IO) {
-                PasswordRepository.get().addPassword(it)
-                withContext(Dispatchers.Main) {
-                    showToast(requireActivity().applicationContext, "saved")
-                    requireActivity().finish()
-                }
-            }
-        }
     }
 }

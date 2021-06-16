@@ -1,5 +1,6 @@
 package com.sohnyi.liangmi
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -16,6 +17,9 @@ import com.sohnyi.liangmi.entry.Password
 import com.sohnyi.liangmi.enums.CategoryEnum
 import com.sohnyi.liangmi.utils.setStatusBarMode
 import kotlin.math.max
+
+private const val REQUEST_CODE_PASSWORD_UPDATE = 1
+private const val REQUEST_CODE_PASSWORD_ADD = 2
 
 class PasswordListActivity : AppCompatActivity() {
 
@@ -36,7 +40,7 @@ class PasswordListActivity : AppCompatActivity() {
     }
 
     private val mAdapter by lazy {
-        PasswordListAdapter(categoryId) {
+        PasswordListAdapter() {
             onPasswordClick(it)
         }
     }
@@ -73,6 +77,8 @@ class PasswordListActivity : AppCompatActivity() {
         rv.layoutManager = llm
         rv.adapter = mAdapter
 
+        updateList()
+
         val ivScrollTop: ImageButton = findViewById(R.id.ib_to_top)
         ivScrollTop.setOnClickListener {
             scroller.duration = 5f / (max(llm.findLastVisibleItemPosition(), 15) / 15)
@@ -85,16 +91,34 @@ class PasswordListActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateList() {
+        mAdapter.submitList(PasswordLab.getPasswordsByCategory(categoryId))
+    }
+
     private fun onPasswordClick(password: Password) {
         val intent = PasswordPagerActivity.newIntent(this, categoryId, password.id)
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_CODE_PASSWORD_UPDATE)
     }
 
     /**
      * 添加密码点击事件
      */
     private fun onAddClick() {
-        startActivity(PasswordPagerActivity.newIntent(this, categoryId, null))
+        startActivityForResult(
+            PasswordPagerActivity.newIntent(this, categoryId, null),
+            REQUEST_CODE_PASSWORD_ADD
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != Activity.RESULT_OK) {
+            return
+        }
+        when (requestCode) {
+            REQUEST_CODE_PASSWORD_UPDATE -> updateList()
+            REQUEST_CODE_PASSWORD_ADD -> updateList()
+        }
     }
 
 }
