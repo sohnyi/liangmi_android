@@ -38,8 +38,13 @@ class CategoryViewHolder(view: View, private val onClick: (category: Category) -
                 CategoryEnum.ENTERTAINMENT -> R.drawable.ic_entertainment
                 CategoryEnum.GAME -> R.drawable.ic_game
                 CategoryEnum.LIFESTYLE -> R.drawable.ic_lifestyle
+                CategoryEnum.WORK_OR_STUDY -> 0
+                CategoryEnum.PRODUCTIVITY -> 0
+                CategoryEnum.UTILITIES -> 0
                 CategoryEnum.OTHER -> R.drawable.ic_other
             }
-        ivCategory.setImageDrawable(ContextCompat.getDrawable(ivCategory.context, drawableId))
+        if (drawableId != 0) {
+            ivCategory.setImageDrawable(ContextCompat.getDrawable(ivCategory.context, drawableId))
+        }
     }
 }

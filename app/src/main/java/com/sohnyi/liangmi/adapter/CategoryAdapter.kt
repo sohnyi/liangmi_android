@@ -19,7 +19,10 @@ class CategoryAdapter(private val onClick: (category: Category) -> Unit) :
             Category(CategoryEnum.values()[3].id, CategoryEnum.values()[3].name),
             Category(CategoryEnum.values()[4].id, CategoryEnum.values()[4].name),
             Category(CategoryEnum.values()[5].id, CategoryEnum.values()[5].name),
-            Category(CategoryEnum.values()[6].id, CategoryEnum.values()[6].name)
+            Category(CategoryEnum.values()[6].id, CategoryEnum.values()[6].name),
+            Category(CategoryEnum.values()[7].id, CategoryEnum.values()[7].name),
+            Category(CategoryEnum.values()[8].id, CategoryEnum.values()[8].name),
+            Category(CategoryEnum.values()[9].id, CategoryEnum.values()[9].name)
         )
     }
 

@@ -10,5 +10,8 @@ enum class CategoryEnum(val id: Int, val title: String) {
     EDUCATION(3, "education"),
     ENTERTAINMENT(4, "entertainment"),
     LIFESTYLE(5, "lifestyle"),
-    OTHER(6, "other")
+    WORK_OR_STUDY(6, "work_or_study"),
+    PRODUCTIVITY(7, "productivity"),
+    UTILITIES(8, "utilities"),
+    OTHER(9, "other")
 }

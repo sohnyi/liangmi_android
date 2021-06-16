@@ -37,7 +37,7 @@ class PasswordHolder(itemView: View, private val onClick: (password: Password) -
             if (drawableId != 0) {
                 ivIcon.setImageDrawable(ContextCompat.getDrawable(ivIcon.context, drawableId))
             } else {
-                ivIcon.setImageDrawable(ColorDrawable(Color.WHITE))
+                ivIcon.setImageDrawable(ColorDrawable(Color.DKGRAY))
             }
         }
 

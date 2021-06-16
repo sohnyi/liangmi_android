@@ -59,13 +59,16 @@ class PasswordListActivity : AppCompatActivity() {
 
         categoryId = intent.getIntExtra(EXTRA_CATEGORY_ID, 0)
         val title = when (CategoryEnum.values()[categoryId]) {
-            CategoryEnum.SOCIAL -> CategoryEnum.SOCIAL.title
-            CategoryEnum.FINANCE -> CategoryEnum.FINANCE.title
-            CategoryEnum.GAME -> CategoryEnum.GAME.title
-            CategoryEnum.ENTERTAINMENT -> CategoryEnum.ENTERTAINMENT.title
-            CategoryEnum.EDUCATION -> CategoryEnum.EDUCATION.title
-            CategoryEnum.LIFESTYLE -> CategoryEnum.LIFESTYLE.title
-            CategoryEnum.OTHER -> CategoryEnum.OTHER.title
+            CategoryEnum.SOCIAL -> getString(R.string.social)
+            CategoryEnum.FINANCE -> getString(R.string.finance)
+            CategoryEnum.GAME -> getString(R.string.game)
+            CategoryEnum.ENTERTAINMENT -> getString(R.string.entertainment)
+            CategoryEnum.EDUCATION -> getString(R.string.education)
+            CategoryEnum.LIFESTYLE -> getString(R.string.lifestyle)
+            CategoryEnum.WORK_OR_STUDY -> getString(R.string.work_or_study)
+            CategoryEnum.PRODUCTIVITY -> getString(R.string.productivity)
+            CategoryEnum.UTILITIES -> getString(R.string.utilities)
+            else ->getString(R.string.other)
         }
 
 
