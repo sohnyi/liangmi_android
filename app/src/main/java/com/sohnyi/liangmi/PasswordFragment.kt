@@ -83,10 +83,10 @@ class PasswordFragment : Fragment() {
 
         mPassword?.let { password ->
 
-            mEtTitle?.setText(password.title)
-            mEtAccount?.setText(password.account)
-            mEtPassword?.setText(password.password)
-            mEtRemark?.setText(password.remark)
+            mEtTitle?.setText(password.title, TextView.BufferType.EDITABLE)
+            mEtAccount?.setText(password.account, TextView.BufferType.EDITABLE)
+            mEtPassword?.setText(password.password, TextView.BufferType.EDITABLE)
+            mEtRemark?.setText(password.remark, TextView.BufferType.EDITABLE)
 
             val updateTimeTv: TextView = view.findViewById(R.id.tv_update_time)
             updateTimeTv.visibility = View.VISIBLE
