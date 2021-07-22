@@ -7,9 +7,15 @@ import com.sohnyi.liangmi.entry.Password
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+private const val TAG = "PasswordLab"
+
 object PasswordLab {
 
     val allPasswords = mutableListOf<Password>()
+
+    init {
+        allPasswords.clear()
+    }
 
     fun getPasswordsByCategory(id: Int): List<Password> {
         val passwords: MutableList<Password> = mutableListOf()
@@ -46,5 +52,4 @@ object PasswordLab {
             allPasswords[index] = password
         }
     }
-
 }

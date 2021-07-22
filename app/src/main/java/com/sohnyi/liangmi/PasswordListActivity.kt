@@ -7,12 +7,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sohnyi.liangmi.adapter.PasswordListAdapter
 import com.sohnyi.liangmi.common.SpeedyLinearSmoothScroller
+import com.sohnyi.liangmi.databinding.ActivityPasswordListBinding
 import com.sohnyi.liangmi.entry.Password
 import com.sohnyi.liangmi.enums.CategoryEnum
 import com.sohnyi.liangmi.utils.setStatusBarMode
@@ -22,6 +20,8 @@ private const val REQUEST_CODE_PASSWORD_UPDATE = 1
 private const val REQUEST_CODE_PASSWORD_ADD = 2
 
 class PasswordListActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityPasswordListBinding
 
     private var categoryId: Int = CategoryEnum.EDUCATION.id
 
@@ -47,15 +47,11 @@ class PasswordListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_password_list)
+        binding = ActivityPasswordListBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         setStatusBarMode(Color.WHITE, true)
-
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        val rv: RecyclerView = findViewById(R.id.rv_password)
-        val fabAdd: FloatingActionButton = findViewById(R.id.fab_add)
-
-        setSupportActionBar(toolbar)
 
         categoryId = intent.getIntExtra(EXTRA_CATEGORY_ID, 0)
         val title = when (CategoryEnum.values()[categoryId]) {
@@ -68,17 +64,16 @@ class PasswordListActivity : AppCompatActivity() {
             CategoryEnum.WORK_OR_STUDY -> getString(R.string.work_or_study)
             CategoryEnum.PRODUCTIVITY -> getString(R.string.productivity)
             CategoryEnum.UTILITIES -> getString(R.string.utilities)
-            else ->getString(R.string.other)
+            else -> getString(R.string.other)
         }
 
 
-        toolbar.title = title
-        setSupportActionBar(toolbar)
-
+        binding.toolbar.title = title
+        setSupportActionBar(binding.toolbar)
 
         val llm = LinearLayoutManager(this)
-        rv.layoutManager = llm
-        rv.adapter = mAdapter
+        binding.rvPassword.layoutManager = llm
+        binding.rvPassword.adapter = mAdapter
 
         updateList()
 
@@ -89,7 +84,7 @@ class PasswordListActivity : AppCompatActivity() {
             llm.startSmoothScroll(scroller)
         }
 
-        fabAdd.setOnClickListener {
+        binding.fabAdd.setOnClickListener {
             onAddClick()
         }
     }

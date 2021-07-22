@@ -4,8 +4,8 @@
     package="com.sohnyi.liangmi">
 
     <application
-        android:allowBackup="true"
-        android:fullBackupContent="true"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -27,7 +27,7 @@
             android:name=".MainActivity"
             android:exported="false"
             android:launchMode="singleTask"
-            android:theme="@style/DarkStatusBar"></activity>
+            android:theme="@style/DarkStatusBar" />
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
@@ -41,7 +41,7 @@
             tools:node="merge">
             <meta-data
                 android:name="com.sohnyi.liangmi.startup.RoomInitializer"
-                android:value="androidx.startup"></meta-data>
+                android:value="androidx.startup"/>
         </provider>
     </application>
 

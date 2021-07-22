@@ -5,9 +5,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.sohnyi.liangmi.databinding.ActivityPasswordPagerBinding
 import com.sohnyi.liangmi.utils.setStatusBarMode
 
 class PasswordPagerActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityPasswordPagerBinding
 
     companion object {
 
@@ -24,7 +27,9 @@ class PasswordPagerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_password_pager)
+        binding = ActivityPasswordPagerBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         setStatusBarMode(Color.WHITE, true)
 

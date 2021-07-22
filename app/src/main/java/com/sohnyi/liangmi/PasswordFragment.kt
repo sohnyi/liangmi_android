@@ -2,14 +2,19 @@ package com.sohnyi.liangmi
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.*
+import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.sohnyi.liangmi.databinding.FragmentPasswordBinding
 import com.sohnyi.liangmi.entry.Password
 import com.sohnyi.liangmi.utils.showToast
 import java.text.SimpleDateFormat
@@ -17,13 +22,12 @@ import java.util.*
 
 class PasswordFragment : Fragment() {
 
+    private var _binding: FragmentPasswordBinding? = null
+
+    private val binding get() = _binding!!
+
     private var mCategoryId: Int? = null
     private var mPassword: Password? = null
-
-    private var mEtTitle: EditText? = null
-    private var mEtAccount: EditText? = null
-    private var mEtPassword: EditText? = null
-    private var mEtRemark: EditText? = null
 
     companion object {
         private const val ARG_CATEGORY_ID = "category_id"
@@ -66,16 +70,16 @@ class PasswordFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_password, container, false)
+    ): View {
+
+        _binding = FragmentPasswordBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-
-        mEtTitle = view.findViewById(R.id.et_title)
-        mEtAccount = view.findViewById(R.id.et_account)
-        mEtPassword = view.findViewById(R.id.et_password)
-        mEtRemark = view.findViewById(R.id.et_remark)
 
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
         toolbar.title = getString(R.string.new_password)
@@ -83,10 +87,10 @@ class PasswordFragment : Fragment() {
 
         mPassword?.let { password ->
 
-            mEtTitle?.setText(password.title, TextView.BufferType.EDITABLE)
-            mEtAccount?.setText(password.account, TextView.BufferType.EDITABLE)
-            mEtPassword?.setText(password.password, TextView.BufferType.EDITABLE)
-            mEtRemark?.setText(password.remark, TextView.BufferType.EDITABLE)
+            binding.etTitle.setText(password.title, TextView.BufferType.EDITABLE)
+            binding.etAccount.setText(password.account, TextView.BufferType.EDITABLE)
+            binding.etPassword.setText(password.password, TextView.BufferType.EDITABLE)
+            binding.etRemark.setText(password.remark, TextView.BufferType.EDITABLE)
 
             val updateTimeTv: TextView = view.findViewById(R.id.tv_update_time)
             updateTimeTv.visibility = View.VISIBLE
@@ -116,17 +120,17 @@ class PasswordFragment : Fragment() {
     }
 
     private fun isInputValid(): Boolean {
-        if (mEtTitle?.text.isNullOrBlank()) {
+        if (binding.etTitle.text.isNullOrBlank()) {
             showToast(requireActivity().applicationContext, "title can not empty")
             return false
         }
 
-        if (mEtAccount?.text.isNullOrBlank()) {
+        if (binding.etAccount.text.isNullOrBlank()) {
             showToast(requireActivity().applicationContext, "account can not empty")
             return false
         }
 
-        if (mEtPassword?.text.isNullOrBlank()) {
+        if (binding.etPassword.text.isNullOrBlank()) {
             showToast(requireActivity().applicationContext, "password can not empty")
             return false
         }
@@ -144,19 +148,19 @@ class PasswordFragment : Fragment() {
         if (mPassword == null) {
             val password = Password(
                 categoryId = mCategoryId!!,
-                title = mEtTitle?.text.toString(),
-                account = mEtAccount?.text.toString(),
-                password = mEtPassword?.text.toString(),
-                remark = mEtRemark?.text.toString(),
+                title = binding.etTitle.text.toString(),
+                account = binding.etAccount.text.toString(),
+                password = binding.etPassword.text.toString(),
+                remark = binding.etRemark.text.toString(),
                 crateTime = System.currentTimeMillis()
             )
             PasswordLab.addPassword(requireActivity(), password)
         } else {
             mPassword?.run {
-                this.title = mEtTitle?.text.toString()
-                this.account = mEtAccount?.text.toString()
-                this.password = mEtPassword?.text.toString()
-                this.remark = mEtRemark?.text.toString()
+                this.title = binding.etTitle.text.toString()
+                this.account = binding.etAccount.text.toString()
+                this.password = binding.etPassword.text.toString()
+                this.remark = binding.etRemark.text.toString()
                 PasswordLab.updatePassword(requireActivity(), this)
             }
         }

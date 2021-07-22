@@ -4,12 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.*
 import android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.sohnyi.liangmi.databinding.ActivityPasswordGenerateBinding
 import com.sohnyi.liangmi.utils.copyToClipboard
 import com.sohnyi.liangmi.utils.setStatusBarMode
 import com.sohnyi.liangmi.veiwmodel.PasswordGeneratorViewModel
@@ -18,11 +17,7 @@ import kotlinx.coroutines.launch
 
 class PasswordGeneratorActivity : AppCompatActivity() {
 
-    private lateinit var tvPassword: TextView
-    private lateinit var cbUppercase: CheckBox
-    private lateinit var cbLowercase: CheckBox
-    private lateinit var cbNumbers: CheckBox
-    private lateinit var cbSymbols: CheckBox
+    private lateinit var binding: ActivityPasswordGenerateBinding
 
     private var passwordLength = DEFAULT_LENGTH
     private var uppercaseAvailable = true
@@ -46,84 +41,82 @@ class PasswordGeneratorActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_password_generate)
+        binding = ActivityPasswordGenerateBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         setStatusBarMode(Color.WHITE, true)
 
-        tvPassword = findViewById(R.id.tv_password)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        val ivRenew: ImageView = findViewById(R.id.iv_renew)
-        val pickerLength: NumberPicker = findViewById(R.id.picker_length)
-        cbUppercase = findViewById(R.id.cb_uppercase)
-        cbLowercase = findViewById(R.id.cb_lowercase)
-        cbNumbers = findViewById(R.id.cb_numbers)
-        cbSymbols = findViewById(R.id.cb_symbols)
-        val btnCopy: Button = findViewById(R.id.btn_copy)
-
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        pickerLength.minValue = MIN_LENGTH
-        pickerLength.maxValue = MAX_LENGTH
-        pickerLength.value = passwordLength
-        pickerLength.wrapSelectorWheel = false
-        cbUppercase.isChecked = uppercaseAvailable
-        cbLowercase.isChecked = lowercaseAvailable
-        cbNumbers.isChecked = numbersAvailable
-        cbSymbols.isChecked = symbolsAvailable
+        binding.pickerLength.minValue = MIN_LENGTH
+        binding.pickerLength.maxValue = MAX_LENGTH
+        binding.pickerLength.value = passwordLength
+        binding.pickerLength.wrapSelectorWheel = false
+        binding.cbUppercase.isChecked = uppercaseAvailable
+        binding.cbLowercase.isChecked = lowercaseAvailable
+        binding.cbNumbers.isChecked = numbersAvailable
+        binding.cbSymbols.isChecked = symbolsAvailable
 
-        ivRenew.setOnClickListener {
+        binding.ivRenew.setOnClickListener {
             it.animate().rotationBy(180f).start()
             reNewPassword()
         }
 
-        pickerLength.setOnScrollListener { _, scrollState ->
-            if (scrollState == SCROLL_STATE_IDLE && pickerLength.value != passwordLength) {
-                passwordLength = pickerLength.value
+        binding.pickerLength.setOnScrollListener { _, scrollState ->
+            if (scrollState == SCROLL_STATE_IDLE && binding.pickerLength.value != passwordLength) {
+                passwordLength = binding.pickerLength.value
                 reNewPassword()
             }
         }
 
-        cbUppercase.setOnCheckedChangeListener { _, isChecked ->
+        binding.cbUppercase.setOnCheckedChangeListener { _, isChecked ->
             uppercaseAvailable = isChecked
             assembleChanged()
         }
-        cbLowercase.setOnCheckedChangeListener { _, isChecked ->
+        binding.cbLowercase.setOnCheckedChangeListener { _, isChecked ->
             lowercaseAvailable = isChecked
             assembleChanged()
         }
-        cbNumbers.setOnCheckedChangeListener { _, isChecked ->
+        binding.cbNumbers.setOnCheckedChangeListener { _, isChecked ->
             numbersAvailable = isChecked
             assembleChanged()
         }
-        cbSymbols.setOnCheckedChangeListener { _, isChecked ->
+        binding.cbSymbols.setOnCheckedChangeListener { _, isChecked ->
             symbolsAvailable = isChecked
             assembleChanged()
         }
 
-        btnCopy.setOnClickListener {
+        binding.btnCopy.setOnClickListener {
             copyPassword()
         }
 
-        tvPassword.text = passwordGeneratorViewModel.password
+        binding.tvPassword.text = passwordGeneratorViewModel.password
     }
 
     private fun reNewPassword() {
         lifecycleScope.launch(Dispatchers.Main) {
-            passwordGeneratorViewModel.getNewPassword(passwordLength, uppercaseAvailable, lowercaseAvailable, numbersAvailable, symbolsAvailable)
-            tvPassword.text = passwordGeneratorViewModel.password
+            passwordGeneratorViewModel.getNewPassword(
+                passwordLength,
+                uppercaseAvailable,
+                lowercaseAvailable,
+                numbersAvailable,
+                symbolsAvailable
+            )
+            binding.tvPassword.text = passwordGeneratorViewModel.password
         }
     }
 
     private fun assembleChanged() {
-        cbUppercase.isClickable = lowercaseAvailable || numbersAvailable || symbolsAvailable
-        cbLowercase.isClickable = uppercaseAvailable || numbersAvailable || symbolsAvailable
-        cbNumbers.isClickable = uppercaseAvailable || lowercaseAvailable || symbolsAvailable
-        cbSymbols.isClickable = uppercaseAvailable || lowercaseAvailable || numbersAvailable
+        binding.cbUppercase.isClickable = lowercaseAvailable || numbersAvailable || symbolsAvailable
+        binding.cbLowercase.isClickable = uppercaseAvailable || numbersAvailable || symbolsAvailable
+        binding.cbNumbers.isClickable = uppercaseAvailable || lowercaseAvailable || symbolsAvailable
+        binding.cbSymbols.isClickable = uppercaseAvailable || lowercaseAvailable || numbersAvailable
 
         reNewPassword()
     }
 
     private fun copyPassword() {
-        copyToClipboard(this, tvPassword.text.toString())
+        copyToClipboard(this, binding.tvPassword.text.toString())
     }
 }
