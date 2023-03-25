@@ -10,21 +10,30 @@ import com.sohnyi.liangmi.database.PasswordRepository
 import com.sohnyi.liangmi.mToken
 import com.sohnyi.liangmi.utils.SpUtils
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private const val TAG = "SplashActivity"
+private const val DELAY_DURATION = 1000L
 
 class SplashActivity : AppCompatActivity() {
+
+
+    private var tokenInit = false
+    private var passwordInit = false
+    private var hasDelayed = false
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             hideSystemUI()
-            lifecycleScope.launch(Dispatchers.Main) {
-                initPassword()
-                initToken()
-                LoginActivity.start(this@SplashActivity)
+            initPassword()
+            initToken()
+            lifecycleScope.launch {
+                delay(DELAY_DURATION)
+                hasDelayed = true
+                toLogin()
             }
         }
     }
@@ -34,17 +43,27 @@ class SplashActivity : AppCompatActivity() {
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
     }
 
-    private suspend fun initToken() {
-        withContext(Dispatchers.IO) {
+    private fun initToken() {
+        lifecycleScope.launch(Dispatchers.IO) {
             mToken = SpUtils.getPasSha256(this@SplashActivity)
+            tokenInit = true
         }
     }
 
-    private suspend fun initPassword() {
-        withContext(Dispatchers.IO) {}
-        PasswordRepository.initialize(applicationContext)
-        Log.d(TAG, "onCreate: ${PasswordLab.allPasswords.size}")
-        val passwords = PasswordRepository.get().getPasswords()
-        PasswordLab.allPasswords.addAll(passwords)
+    private fun initPassword() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            PasswordRepository.initialize(applicationContext)
+            Log.d(TAG, "onCreate: ${PasswordLab.allPasswords.size}")
+            val passwords = PasswordRepository.get().getPasswords()
+            PasswordLab.allPasswords.addAll(passwords)
+            passwordInit = true
+        }
+    }
+
+    private fun toLogin() {
+        if (hasDelayed && tokenInit && passwordInit) {
+            LoginActivity.start(this@SplashActivity)
+            finish()
+        }
     }
 }

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.sohnyi.liangmi.databinding.ActivityLoginBinding
 import com.sohnyi.liangmi.extensions.sha256Hex
+import com.sohnyi.liangmi.utils.BiometricUtil
 import com.sohnyi.liangmi.utils.SpUtils
 
 class LoginActivity : AppCompatActivity() {
@@ -31,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
 
         binding.ivClear.setOnClickListener {
             binding.etPassword.text.clear()
@@ -61,6 +61,8 @@ class LoginActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        binding.ibtFinger.setOnClickListener { BiometricUtil.isBiometricAvailable(this, 1) }
     }
 
     private fun handleInput(input: String) {

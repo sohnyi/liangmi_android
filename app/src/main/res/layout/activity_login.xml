@@ -65,4 +65,16 @@
         app:layout_constraintEnd_toEndOf="@id/et_password"
         android:layout_marginTop="16dp"/>
 
+    <ImageButton
+        android:id="@+id/ibt_finger"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/btn_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.75"
+        android:src="@drawable/ic_baseline_fingerprint_32"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
